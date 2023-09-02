@@ -1,0 +1,14 @@
+---
+- name: Compile {{ prg_name }}
+  ansible.builtin.command: make
+  args:
+    chdir: "{{ work_dir }}"
+
+- name: Install {{ prg_name }}
+  ansible.builtin.command: make PREFIX={{ install_dir }} install
+  args:
+    chdir: "{{ work_dir }}"
+  become: true
+  become_user: root
+
+
