@@ -1,27 +1,57 @@
 ---
-- name: Clean env config repo
+- name: Clean dotfile directory
   ansible.builtin.file:
-    path: "{{ host_envdir }}"
+    path: "{{ dst_dotdir }}"
     state: "absent"
 
-- name: Pull env config repo from git
-  git:
-    repo: "{{ env_repo }}"
-    dest: "{{ host_envdir }}"
-
-- name: Create real .config directory to avoid stowing it
-  file:
-    path: "{{ host_homedir }}/.config"
+- name: Recreate dotfile directory and config directory
+  ansible.builtin.file:
+    path: "{{ item }}"
     state: directory
+  with_items:
+    - "{{ host_homedir }}/.config"
+    - "{{ dst_dotdir }}"
 
-- name: Stow basic env config
+- name: Copy and stow headless dotfiles
+  include_role:
+    name: copy_and_stow
+  vars:
+    prg_names: [ bash, clang, git, nvim, pylint, screen ]
+    src_dir: "{{ src_dotdir }}"
+    dest_dir: "{{ dst_dotdir }}"
+    become_usr: "{{ host_username }}"
+
+- name: Unstow bash
+  ansible.builtin.command: stow -Dv {{ item }}
+  args:
+    chdir: "{{ dst_dotdir }}"
+  with_items:
+    - bash
+
+- name: Select Debian dircolors
+  ansible.builtin.command: mv "{{ dst_dotdir }}/bash/.dircolors_debian" "{{ dst_dotdir }}/bash/.dircolors"
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Select Redhat dircolors
+  ansible.builtin.command: mv "{{ dst_dotdir }}/bash/.dircolors_centos" "{{ dst_dotdir }}/bash/.dircolors"
+  when: ansible_facts['os_family'] == "Redhat"
+
+- name: Remove Debian dircolors
+  ansible.builtin.file:
+    path: "{{ dst_dotdir }}/bash/.dircolors_debian"
+    state: "absent"
+  when: ansible_facts['os_family'] == "Redhat"
+
+- name: Remove Redhat dircolors
+  ansible.builtin.file:
+    path: "{{ dst_dotdir }}/bash/.dircolors_centos"
+    state: "absent"
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Stow bash dotfiles
   ansible.builtin.command: stow -Rv {{ item }}
   args:
-    chdir: "{{ host_envdir }}"
+    chdir: "{{ dst_dotdir }}"
   loop:
-    - git
     - bash
-    - clang
-    - pylint
-    - nvim
-    - screen
+

@@ -1,0 +1,5 @@
+---
+prg_names: []
+src_dir: files
+dest_dir: /usr/local/stow
+become_usr: root
