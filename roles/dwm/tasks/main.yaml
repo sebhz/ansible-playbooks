@@ -1,0 +1,36 @@
+---
+- name: Compile and install {{ dwm_name }}
+  include_role:
+    name: install_from_git
+  vars:
+    prg_name: "{{ dwm_name }}"
+    repo: https://git.suckless.org/dwm
+    commit: ba56fe9fea0a28d81
+    install_dir: "{{ dwm_installdir }}"
+
+- name: Compile and install {{ dmenu_name }}
+  include_role:
+    name: install_from_git
+  vars:
+    prg_name: "{{ dmenu_name }}"
+    repo: https://git.suckless.org/dmenu/
+    install_dir: "{{ dmenu_installdir }}"
+
+- name: Compile and install dwmblocks
+  include_role:
+    name: dwmblocks
+
+- name: Copy dwm helpers
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ dwm_installdir }}/bin/{{ item | basename }}"
+    mode: 0755
+  with_fileglob: "files/prg/{{ dwm_name }}/*-wrapper"
+
+- name: Stow dwm and auxiliary programs
+  ansible.builtin.command: stow -Rv {{ item }}
+  args:
+    chdir: "{{ install_root }}"
+  loop:
+    - "{{ dwm_name }}"
+    - "{{ dmenu_name }}"

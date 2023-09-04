@@ -16,7 +16,7 @@
   include_role:
     name: copy_and_stow
   vars:
-    prg_names: [ bash, clang, git, nvim, pylint, screen ]
+    prg_names: [ bash, clang, git, nvim, pylint, screen, vim ]
     src_dir: "{{ src_dotdir }}"
     dest_dir: "{{ dst_dotdir }}"
     become_usr: "{{ host_username }}"

@@ -1,0 +1,40 @@
+---
+- hosts: desktop
+  vars_files: ../configuration.yaml
+  vars:
+    - install_root: /usr/local/stow
+  become: true
+
+  roles:
+    - common
+    - role: headless
+      become_user: "{{ host_username }}"
+    - desktop
+    - dwm
+    - interception-tools
+
+  tasks:
+    - name: Stow desktop environment
+      ansible.builtin.command: stow -Rv {{ item }}
+      args:
+        chdir: "{{ host_envdir }}"
+      loop:
+        - x
+        - cmus
+
+    - name: Fix gdm3 Xsession file
+      copy:
+        dest: /etc/gdm3/Xsession
+        src: etc/gdm3/Xsession
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Create xsession file for dwm
+      copy:
+        dest: /usr/share/xsessions/old-x-session.desktop
+        src: usr/share/xsessions/old-x-session.desktop
+        owner: root
+        group: root
+        mode: 0644
+

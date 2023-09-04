@@ -19,19 +19,12 @@
     dest: "{{ work_dir }}"
     version: "{{ commit }}"
 
-- name: Look for patch files on remote machine
-  find:
-    paths: "{{ patch_dir }}"
-    patterns: "*.patch"
-  register: patch_glob
-
 - name: Patch source tree
-  ansible.builtin.command: git apply {{ item.path }}
+  ansible.builtin.command: git apply {{ item }}
   args:
     chdir: "{{ work_dir }}"
   # Sort patches so that they are applied in consistent order
-  with_items:
-    "{{ patch_glob.files | sort(attribute='path') }}"
+  loop: "{{ query('fileglob', 'files/prg/{{ prg_name }}/patch/*') | sort }}"
 
 - import_tasks: make.yaml
   when: make_system == "make"

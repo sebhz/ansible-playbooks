@@ -3,6 +3,7 @@
   apt:
     name:
       - autojump
+      - black
       - build-essential
       - clang-format
       - git

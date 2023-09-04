@@ -1,0 +1,5 @@
+install_root: /usr/local/stow
+dwm_name: dwm-6.4
+dwm_installdir: "{{ install_root }}/{{ dwm_name }}"
+dmenu_name: dmenu
+dmenu_installdir: "{{ install_root }}/{{ dmenu_name }}"
