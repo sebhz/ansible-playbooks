@@ -6,21 +6,22 @@
   become: true
 
   roles:
-    - common
+    - common_pkg
     - role: headless
       become_user: "{{ host_username }}"
-    - desktop
+    - desktop_pkg
     - dwm
-    - interception-tools
+    - interception
 
   tasks:
     - name: Stow desktop environment
-      ansible.builtin.command: stow -Rv {{ item }}
-      args:
-        chdir: "{{ host_envdir }}"
-      loop:
-        - x
-        - cmus
+      include_role:
+        name: copy_and_stow
+      vars:
+        prg_names: [ cmus, x ]
+        src_dir: "{{ src_dotdir }}"
+        dest_dir: "{{ dst_dotdir }}"
+        become_usr: "{{ host_username }}"
 
     - name: Fix gdm3 Xsession file
       copy:

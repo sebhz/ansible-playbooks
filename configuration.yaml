@@ -1,5 +1,4 @@
 host_username: "seb"
 host_homedir: "/home/{{ host_username }}"
-host_envdir: "{{ host_homedir }}/.env"
-src_dotdir: ".dotfiles"
-dst_dotdir: "{{ host_homedir }}/{{ src_dotdir }}"
+src_dotdir: "dotfiles"
+dst_dotdir: "{{ host_homedir }}/.{{ src_dotdir }}"

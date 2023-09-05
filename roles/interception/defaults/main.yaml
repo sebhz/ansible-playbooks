@@ -1,3 +1,4 @@
+install_root: /usr/local/stow
 intercept_name: interception-tools
 intercept_installdir: "{{ install_root }}/{{ intercept_name }}"
 caps2esc_name: caps2esc

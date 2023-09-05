@@ -1,8 +1,10 @@
 ---
 - hosts: headless
   vars_files: ../configuration.yaml
+  vars:
+    - install_root: /usr/local/stow
   become: true
   roles:
-    - common
+    - common_pkg
     - role: headless
       become_user: "{{ host_username }}"

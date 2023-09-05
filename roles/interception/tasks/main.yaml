@@ -9,7 +9,8 @@
     make_system: cmake
 
 - name: Compile and install {{ caps2esc_name }}
-  include_role: install_from_git
+  include_role:
+    name: install_from_git
   vars:
     prg_name: "{{ caps2esc_name }}"
     repo: https://gitlab.com/interception/linux/plugins/caps2esc.git
@@ -42,7 +43,7 @@
 
 - name: Stow interception-tools configs
   ansible.builtin.command: stow -Rv interception
-    args:
-      chdir: /etc/stow
+  args:
+    chdir: /etc/stow
   become_user: root
 
