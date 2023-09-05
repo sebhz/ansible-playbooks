@@ -27,6 +27,7 @@ set nocindent
 set exrc " Allow using local vimrc (useful for ctags)
 
 let c_space_errors = 1
+let g:black_use_virtualenv = 0
 
 " Some syntax coloring
 set t_Co=256

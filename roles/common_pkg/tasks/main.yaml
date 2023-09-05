@@ -7,8 +7,8 @@
       - build-essential
       - clang-format
       - git
-      - neovim
       - pylint
+      - python3-pynvim
       - screen
       - silversearcher-ag
       - stow
@@ -21,3 +21,20 @@
     autoremove: yes
   when: ansible_facts['os_family'] == "Debian"
 
+- name: Create nvim stow directory
+  ansible.builtin.file:
+    path: "{{ nvim_bindir }}"
+    state: directory
+
+- name: Pull nvim appimage from github
+  get_url:
+    url: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+    dest: "{{ nvim_bindir }}/nvim"
+    mode: 0755
+
+- name: Stow nvim
+  ansible.builtin.command: stow -Rv {{ item }}
+  args:
+    chdir: "{{ install_root }}"
+  with_items:
+    - neovim

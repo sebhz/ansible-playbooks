@@ -2,7 +2,6 @@
 - hosts: desktop
   vars_files: ../configuration.yaml
   vars:
-    - install_root: /usr/local/stow
   become: true
 
   roles:

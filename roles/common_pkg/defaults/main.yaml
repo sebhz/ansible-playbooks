@@ -1,0 +1,2 @@
+install_root: /usr/local/stow
+nvim_bindir: "{{ install_root }}/neovim/bin"
