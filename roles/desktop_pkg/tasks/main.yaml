@@ -8,6 +8,10 @@
 - name: Install desktop packages
   apt:
     name:
+      - aosd-cat
       - cmus
+      - mono-runtime
+      - pulseaudio-utils
+      - xdotool
     state: present
   when: ansible_facts['os_family'] == "Debian"
