@@ -18,7 +18,7 @@
     make_system: cmake
 
 - name: Stow compiled programs
-  ansible.builtin.command: stow -Rv {{ item }}
+  ansible.builtin.command: stow --dotfiles -Rv {{ item }}
   args:
     chdir: "{{ install_root }}"
   loop:
@@ -42,7 +42,7 @@
   become_user: root
 
 - name: Stow interception-tools configs
-  ansible.builtin.command: stow -Rv interception
+  ansible.builtin.command: stow --dotfiles -Rv interception
   args:
     chdir: /etc/stow
   become_user: root

@@ -10,7 +10,7 @@
   become_user: "{{ become_usr }}"
 
 - name: Stow directories
-  ansible.builtin.command: stow -Rv {{ item }}
+  ansible.builtin.command: stow --dotfiles -Rv {{ item }}
   args:
     chdir: "{{ dest_dir }}"
   with_items: "{{ prg_names }}"

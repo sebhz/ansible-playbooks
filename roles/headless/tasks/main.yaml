@@ -22,34 +22,34 @@
     become_usr: "{{ host_username }}"
 
 - name: Unstow bash
-  ansible.builtin.command: stow -Dv {{ item }}
+  ansible.builtin.command: stow --dotfiles -Dv {{ item }}
   args:
     chdir: "{{ dst_dotdir }}"
   with_items:
     - bash
 
 - name: Select Debian dircolors
-  ansible.builtin.command: mv "{{ dst_dotdir }}/bash/.dircolors_debian" "{{ dst_dotdir }}/bash/.dircolors"
+  ansible.builtin.command: mv "{{ dst_dotdir }}/bash/dot-dircolors_debian" "{{ dst_dotdir }}/bash/dot-dircolors"
   when: ansible_facts['os_family'] == "Debian"
 
 - name: Select Redhat dircolors
-  ansible.builtin.command: mv "{{ dst_dotdir }}/bash/.dircolors_centos" "{{ dst_dotdir }}/bash/.dircolors"
+  ansible.builtin.command: mv "{{ dst_dotdir }}/bash/dot-dircolors_centos" "{{ dst_dotdir }}/bash/dot-dircolors"
   when: ansible_facts['os_family'] == "Redhat"
 
 - name: Remove Debian dircolors
   ansible.builtin.file:
-    path: "{{ dst_dotdir }}/bash/.dircolors_debian"
+    path: "{{ dst_dotdir }}/bash/dot-dircolors_debian"
     state: "absent"
   when: ansible_facts['os_family'] == "Redhat"
 
 - name: Remove Redhat dircolors
   ansible.builtin.file:
-    path: "{{ dst_dotdir }}/bash/.dircolors_centos"
+    path: "{{ dst_dotdir }}/bash/dot-dircolors_centos"
     state: "absent"
   when: ansible_facts['os_family'] == "Debian"
 
 - name: Stow bash dotfiles
-  ansible.builtin.command: stow -Rv {{ item }}
+  ansible.builtin.command: stow --dotfiles -Rv {{ item }}
   args:
     chdir: "{{ dst_dotdir }}"
   loop:

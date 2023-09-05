@@ -28,7 +28,7 @@
   with_fileglob: "files/prg/{{ dwm_name }}/*-wrapper"
 
 - name: Stow dwm and auxiliary programs
-  ansible.builtin.command: stow -Rv {{ item }}
+  ansible.builtin.command: stow --dotfiles -Rv {{ item }}
   args:
     chdir: "{{ install_root }}"
   loop:
