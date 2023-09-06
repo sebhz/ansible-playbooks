@@ -4,7 +4,6 @@
     dest: "{{ dest_dir }}"
     src: "{{ src_dir }}/{{ item }}"
     owner: "{{ become_usr }}"
-    group: "{{ become_usr }}"
     mode: 0755
   with_items: "{{ prg_names }}"
   become_user: "{{ become_usr }}"

@@ -1,7 +1,9 @@
 headless:
   hosts:
     localhost:
+      host_username: seb
 
 desktop:
   hosts:
     localhost:
+      host_username: seb
