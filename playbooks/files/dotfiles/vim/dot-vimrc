@@ -57,4 +57,5 @@ noremap  <Right> <Nop>
 " I like .forth extension for my forth files
 autocmd BufNewFile,BufRead *.forth set syntax=forth
 
-let g:black_use_virtualenv = 0
+" Use local black virtualenv
+let g:black_virtualenv = $HOME . "/.venv/nvim"

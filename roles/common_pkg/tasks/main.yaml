@@ -3,15 +3,14 @@
   apt:
     name:
       - autojump
-      - black
       - build-essential
       - clang-format
       - git
       - pylint
-      - python3-pynvim
       - screen
       - silversearcher-ag
       - stow
+      - vim
     state: present
   when: ansible_facts['os_family'] == "Debian"
 
@@ -38,3 +37,11 @@
     chdir: "{{ install_root }}"
   with_items:
     - neovim
+
+- name: Create (n)vim virtual env and install pynvim and black in it
+  ansible.builtin.pip:
+    virtualenv: "{{ host_homedir }}/.venv/nvim"
+    name:
+      - black
+      - pynvim
+  become_user: "{{ host_username }}"

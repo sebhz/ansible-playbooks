@@ -112,3 +112,5 @@ vim.api.nvim_create_autocmd(
 )
 ]]--
 
+-- Python virtualenv for remote plugins
+vim.g.python3_host_prog = os.getenv("HOME") .. "/.venv/nvim/bin/python"
