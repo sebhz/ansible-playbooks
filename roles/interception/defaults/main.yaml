@@ -1,6 +1,6 @@
 install_root: /usr/local/stow
 intercept_name: interception-tools
 intercept_installdir: "{{ install_root }}/{{ intercept_name }}"
+intercept_configdir: /etc/stow/interception
 caps2esc_name: caps2esc
-caps2esc_installdir: "{{ intercept_installdir }}"
-
+install_swap_mouse: false

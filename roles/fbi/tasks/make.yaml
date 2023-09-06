@@ -1,10 +1,10 @@
 ---
-- name: Compile {{ prg_name }}
+- name: Compile {{ prg_name }} (make)
   ansible.builtin.command: make
   args:
     chdir: "{{ work_dir }}"
 
-- name: Install {{ prg_name }}
+- name: Install {{ prg_name }} (make)
   ansible.builtin.command: make PREFIX={{ install_dir }} install
   args:
     chdir: "{{ work_dir }}"

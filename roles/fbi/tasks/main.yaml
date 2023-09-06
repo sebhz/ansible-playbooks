@@ -13,11 +13,30 @@
     path: "{{ work_dir }}"
     state: "absent"
 
-- name: Pull "{{ repo }} from git"
+- name: Recreate build directory
+  ansible.builtin.file:
+    path: "{{ work_dir }}"
+    state: "directory"
+
+- name: Pull "{{ repo }}" from git
   git:
     repo: "{{ repo }}"
     dest: "{{ work_dir }}"
     version: "{{ commit }}"
+  when: fetch == "git"
+
+- name: Copy "{{ repo }}"
+  copy:
+    dest: "{{ work_dir }}"
+    src: "{{ item }}"
+  with_fileglob: "{{ repo }}/*"
+  when: fetch == "copy"
+
+- name: Fetch "{{ repo }}"
+  get_url:
+    url: "{{ repo }}"
+    dest: "{{ work_dir }}"
+  when: fetch == "url"
 
 - name: Patch source tree
   ansible.builtin.command: git apply {{ item }}

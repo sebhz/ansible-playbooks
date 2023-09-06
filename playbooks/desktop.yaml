@@ -10,7 +10,8 @@
       become_user: "{{ host_username }}"
     - desktop_pkg
     - dwm
-    - interception
+    - role: interception
+      install_swap_mouse: false
 
   tasks:
     - name: Stow desktop environment

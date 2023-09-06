@@ -1,21 +1,40 @@
 ---
+- name: Remove interception installation directory ({{ intercept_installdir }})
+  ansible.builtin.file:
+    path: "{{ intercept_installdir }}"
+    state: "absent"
+
 - name: Compile and install {{ intercept_name }}
   include_role:
-    name: install_from_git
+    name: fbi
   vars:
     prg_name: "{{ intercept_name }}"
     repo: https://gitlab.com/interception/linux/tools.git
     install_dir: "{{ intercept_installdir }}"
     make_system: cmake
+    fetch: git
 
 - name: Compile and install {{ caps2esc_name }}
   include_role:
-    name: install_from_git
+    name: fbi
   vars:
     prg_name: "{{ caps2esc_name }}"
     repo: https://gitlab.com/interception/linux/plugins/caps2esc.git
-    install_dir: "{{ caps2esc_installdir }}"
+    install_dir: "{{ intercept_installdir }}"
     make_system: cmake
+    fetch: git
+
+# TODO: really support multiple plugins
+- name: Compile local plugins
+  include_role:
+    name: fbi
+  vars:
+    prg_name: swap_mouse
+    repo: prg/interception-tools/plugins
+    install_dir: "{{ intercept_installdir }}"
+    make_system: make
+    fetch: copy
+  when: install_swap_mouse
 
 - name: Stow compiled programs
   ansible.builtin.command: stow --dotfiles -Rv {{ item }}
@@ -24,9 +43,15 @@
   loop:
     - "{{ intercept_name }}"
 
-- name: Create stow dir in /etc
+- name: Clean interception config dir
   ansible.builtin.file:
-    path: /etc/stow/interception
+    path: "{{ intercept_configdir }}"
+    state: "absent"
+  become_user: root
+
+- name: Create interception config dir
+  ansible.builtin.file:
+    path: "{{ intercept_configdir }}"
     state: directory
     mode: 0755
   become_user: root
@@ -34,11 +59,20 @@
 - name: Copy interception-tools configs
   ansible.builtin.copy:
     src: "files/prg/{{ intercept_name }}/etc/{{ item }}"
-    dest: /etc/stow/interception
+    dest: "{{ intercept_configdir }}"
     mode: 0755
   loop:
     - interception
     - systemd
+  become_user: root
+
+- name: Remove unwanted plugins
+  ansible.builtin.file:
+    path: "{{ intercept_configdir }}/interception/udevmon.d/{{ item }}"
+    state: "absent"
+  loop:
+    - swap_mouse.yaml
+  when: not install_swap_mouse
   become_user: root
 
 - name: Stow interception-tools configs

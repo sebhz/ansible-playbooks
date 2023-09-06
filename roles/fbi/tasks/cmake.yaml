@@ -1,15 +1,15 @@
 ---
-- name: Prepare compilation of {{ prg_name }}
+- name: Prepare compilation of {{ prg_name }} (cmake)
   ansible.builtin.command: cmake -B build -DCMAKE_BUILD_TYPE=Release
   args:
     chdir: "{{ work_dir }}"
 
-- name: Compile {{ prg_name }}
+- name: Compile {{ prg_name }} (cmake)
   ansible.builtin.command: cmake --build build
   args:
     chdir: "{{ work_dir }}"
 
-- name: Install {{ prg_name }}
+- name: Install {{ prg_name }} (cmake)
   ansible.builtin.command: cmake --install build --prefix {{ install_dir }}
   args:
     chdir: "{{ work_dir }}"
