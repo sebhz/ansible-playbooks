@@ -16,10 +16,27 @@
   include_role:
     name: copy_and_stow
   vars:
-    prg_names: [ bash, clang, git, nvim, pylint, screen, vim ]
+    prg_names: [ bash, clang, nvim, pylint, screen, vim ]
     src_dir: "{{ src_dotdir }}"
     dest_dir: "{{ dst_dotdir }}"
     become_usr: "{{ host_username }}"
+
+- name: Prepare git directory
+  file:
+    path: "{{ dst_dotdir }}/git"
+    state: directory
+
+- name: Copy gitconfig
+  ansible.builtin.template:
+    src: "{{ src_dotdir }}/git/dot-gitconfig.j2"
+    dest: "{{ dst_dotdir }}/git/dot-gitconfig"
+
+- name: Stow gitconfig
+  ansible.builtin.command: stow --dotfiles -Rv {{ item }}
+  args:
+    chdir: "{{ dst_dotdir }}"
+  with_items:
+    - git
 
 - name: Unstow bash
   ansible.builtin.command: stow --dotfiles -Dv {{ item }}

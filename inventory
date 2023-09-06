@@ -2,8 +2,12 @@ headless:
   hosts:
     localhost:
       host_username: seb
+      git_username: "{{ host_username }}"
+      git_email: seb@zyglute.fr
 
 desktop:
   hosts:
     localhost:
       host_username: seb
+      git_username: "{{ host_username }}"
+      git_email: seb@zyglute.fr
