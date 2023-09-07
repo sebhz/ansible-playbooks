@@ -1,3 +1,4 @@
+ansible_python_interpreter: /usr/bin/python3
 host_homedir: "/home/{{ host_username }}"
 src_dotdir: "dotfiles"
 dst_dotdir: "{{ host_homedir }}/.{{ src_dotdir }}"

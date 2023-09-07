@@ -10,8 +10,7 @@
       become_user: "{{ host_username }}"
     - desktop_pkg
     - dwm
-    - role: interception
-      install_swap_mouse: false
+    - interception
 
   tasks:
     - name: Stow desktop environment
@@ -23,13 +22,14 @@
         dest_dir: "{{ dst_dotdir }}"
         become_usr: "{{ host_username }}"
 
-    - name: Fix gdm3 Xsession file
+    - name: Fix gdm3 Xsession file (Ubuntu 22.04)
       copy:
         dest: /etc/gdm3/Xsession
         src: etc/gdm3/Xsession
         owner: root
         group: root
         mode: 0755
+      when: ansible_facts['distribution'] == "Ubuntu" and ansible_facts['lsb']['release'] == "22.04"
 
     - name: Create xsession file for dwm
       copy:

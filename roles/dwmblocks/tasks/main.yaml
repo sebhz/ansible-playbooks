@@ -42,15 +42,18 @@
   file:
     path: "{{ host_homedir }}/bin"
     state: directory
+  become_user: "{{ host_username }}"
 
 - name: Copy binaries in home bin dir
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ host_homedir }}/bin"
+    mode: 0755
     remote_src: yes
   loop:
     - "{{ dwmblocks_dir }}/dwmblocks"
     - "{{ dwmblocks_dir }}/contrib/pulse_monitor"
+  become_user: "{{ host_username }}"
 
 - name: Remove build directories
   ansible.builtin.file:
