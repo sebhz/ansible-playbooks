@@ -1,5 +1,5 @@
 ---
-host_username: seb
-git_username: "{{ host_username }}"
+ansible_user: seb
+git_username: "{{ ansible_user }}"
 git_email: seb@zyglute.fr
 install_swap_mouse: false

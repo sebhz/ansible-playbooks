@@ -1,13 +1,4 @@
 ---
-- name: Check mandatory variables
-  assert:
-    that:
-      - "{{ item }} is defined"
-    fail_msg: "{{ item }} variable must be defined"
-  with_items:
-    - repo
-    - prg_name
-
 - name: Clean build directory
   ansible.builtin.file:
     path: "{{ work_dir }}"

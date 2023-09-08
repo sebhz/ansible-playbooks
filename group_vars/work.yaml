@@ -1,5 +1,5 @@
 ---
-host_username: work_user
+ansible_user: work_user
 git_username: work_git
 git_email: work_email
 install_swap_mouse: true

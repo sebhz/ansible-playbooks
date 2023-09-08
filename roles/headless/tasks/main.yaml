@@ -19,7 +19,7 @@
     prg_names: [ bash, clang, nvim, pylint, screen, vim ]
     src_dir: "{{ src_dotdir }}"
     dest_dir: "{{ dst_dotdir }}"
-    become_usr: "{{ host_username }}"
+    become_usr: "{{ ansible_user }}"
 
 - name: Prepare git directory
   file:

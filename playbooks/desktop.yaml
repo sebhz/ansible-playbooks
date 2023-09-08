@@ -7,7 +7,7 @@
   roles:
     - common_pkg
     - role: headless
-      become_user: "{{ host_username }}"
+      become_user: "{{ ansible_user }}"
     - desktop_pkg
     - dwm
     - interception
@@ -20,7 +20,7 @@
         prg_names: [ cmus, x ]
         src_dir: "{{ src_dotdir }}"
         dest_dir: "{{ dst_dotdir }}"
-        become_usr: "{{ host_username }}"
+        become_usr: "{{ ansible_user }}"
 
     - name: Fix gdm3 Xsession file (Ubuntu 22.04)
       copy:

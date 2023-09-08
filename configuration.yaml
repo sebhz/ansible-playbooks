@@ -1,5 +1,5 @@
 ansible_python_interpreter: /usr/bin/python3
-host_homedir: "/home/{{ host_username }}"
+host_homedir: "/home/{{ ansible_user }}"
 src_dotdir: "dotfiles"
 dst_dotdir: "{{ host_homedir }}/.{{ src_dotdir }}"
 install_root: /usr/local/stow

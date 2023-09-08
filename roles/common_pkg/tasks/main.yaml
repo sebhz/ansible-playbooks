@@ -45,4 +45,4 @@
     name:
       - black
       - pynvim
-  become_user: "{{ host_username }}"
+  become_user: "{{ ansible_user }}"

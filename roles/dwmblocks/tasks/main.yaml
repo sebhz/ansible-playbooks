@@ -42,7 +42,7 @@
   file:
     path: "{{ host_homedir }}/bin"
     state: directory
-  become_user: "{{ host_username }}"
+  become_user: "{{ ansible_user }}"
 
 - name: Copy binaries in home bin dir
   ansible.builtin.copy:
@@ -53,7 +53,7 @@
   loop:
     - "{{ dwmblocks_dir }}/dwmblocks"
     - "{{ dwmblocks_dir }}/contrib/pulse_monitor"
-  become_user: "{{ host_username }}"
+  become_user: "{{ ansible_user }}"
 
 - name: Remove build directories
   ansible.builtin.file:
