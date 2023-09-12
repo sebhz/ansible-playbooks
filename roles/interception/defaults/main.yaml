@@ -2,5 +2,18 @@ install_root: /usr/local/stow
 intercept_name: interception-tools
 intercept_installdir: "{{ install_root }}/{{ intercept_name }}"
 intercept_configdir: /etc/stow/interception
-caps2esc_name: caps2esc
-install_swap_mouse: false
+intercept_plugins_configdir: /etc/stow/interception/interception/udevmon.d
+intercept_plugins: [caps2esc]
+plugins:
+  caps2esc:
+    prg_name: "caps2esc"
+    repo: "https://gitlab.com/interception/linux/plugins/caps2esc.git"
+    install_dir: "{{ intercept_installdir }}"
+    make_system: cmake
+    fetch: git
+  swap_mouse:
+    prg_name: "swap_mouse"
+    repo: "plugins/src/swap_mouse"
+    install_dir: "{{ intercept_installdir }}"
+    make_system: make
+    fetch: copy

@@ -2,4 +2,4 @@
 ansible_user: work_user
 git_username: work_git
 git_email: work_email
-install_swap_mouse: true
+intercept_plugins: [caps2esc, swap_mouse]
