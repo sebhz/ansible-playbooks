@@ -20,10 +20,11 @@
   copy:
     dest: "{{ work_dir }}"
     src: "{{ copy_item }}"
-  with_fileglob: "{{ repo }}/*"
+  # Why on earth is this alway executed ?
+  when: fetch == "copy"
   loop_control:
     loop_var: copy_item
-  when: fetch == "copy"
+  with_fileglob: "{{ repo }}/*"
 
 - name: Fetch "{{ repo }}"
   get_url:
@@ -36,7 +37,7 @@
   args:
     chdir: "{{ work_dir }}"
   # Sort patches so that they are applied in consistent order
-  loop: "{{ query('fileglob', 'files/prg/{{ prg_name }}/patch/*') | sort }}"
+  loop: "{{ query('fileglob', '{{ prg_name }}/patch/*') | sort }}"
 
 - import_tasks: make.yaml
   when: make_system == "make"

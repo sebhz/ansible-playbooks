@@ -27,7 +27,7 @@
     src: "{{ item }}"
     dest: "{{ dwm_installdir }}/bin/{{ item | basename }}"
     mode: 0755
-  with_fileglob: "files/prg/{{ dwm_name }}/*-wrapper"
+  with_fileglob: "{{ dwm_name }}/*-wrapper"
 
 - name: Stow dwm and auxiliary programs
   ansible.builtin.command: stow --dotfiles -Rv {{ item }}
