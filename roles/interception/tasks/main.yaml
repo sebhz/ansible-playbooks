@@ -14,27 +14,17 @@
     make_system: cmake
     fetch: git
 
-- name: Compile and install {{ caps2esc_name }}
+- name: Compile and install plugin binaries
   include_role:
     name: fbi
   vars:
-    prg_name: "{{ caps2esc_name }}"
-    repo: https://gitlab.com/interception/linux/plugins/caps2esc.git
-    install_dir: "{{ intercept_installdir }}"
-    make_system: cmake
-    fetch: git
-
-# TODO: really support multiple plugins
-- name: Compile local plugins
-  include_role:
-    name: fbi
-  vars:
-    prg_name: swap_mouse
-    repo: prg/interception-tools/plugins
-    install_dir: "{{ intercept_installdir }}"
-    make_system: make
-    fetch: copy
-  when: install_swap_mouse
+    prg_name: "{{ item.value.prg_name }}"
+    repo: "{{ item.value.repo }}"
+    install_dir: "{{ item.value.install_dir }}"
+    make_system: "{{ item.value.make_system }}"
+    fetch: "{{ item.value.fetch }}"
+  loop: "{{ lookup('ansible.builtin.dict', plugins) }}"
+  when: "item.key in {{ intercept_plugins }}"
 
 - name: Stow compiled programs
   ansible.builtin.command: stow --dotfiles -Rv {{ item }}
@@ -49,31 +39,31 @@
     state: "absent"
   become_user: root
 
-- name: Create interception config dir
+- name: Create interception config dirs
   ansible.builtin.file:
-    path: "{{ intercept_configdir }}"
+    path: "{{ item }}"
     state: directory
     mode: 0755
   become_user: root
+  with_items:
+    - "{{ intercept_configdir }}"
+    - "{{ intercept_plugins_configdir }}"
 
 - name: Copy interception-tools configs
   ansible.builtin.copy:
-    src: "files/prg/{{ intercept_name }}/etc/{{ item }}"
+    src: "files/etc/{{ item }}"
     dest: "{{ intercept_configdir }}"
     mode: 0755
   loop:
-    - interception
     - systemd
   become_user: root
 
-- name: Remove unwanted plugins
-  ansible.builtin.file:
-    path: "{{ intercept_configdir }}/interception/udevmon.d/{{ item }}"
-    state: "absent"
-  loop:
-    - swap_mouse.yaml
-  when: not install_swap_mouse
-  become_user: root
+- name: Copy interception plugin configs
+  ansible.builtin.copy:
+    src: "etc/interception/udevmon.d/{{ item }}.yaml"
+    dest: "{{ intercept_plugins_configdir }}"
+    mode: 0755
+  with_items: "{{ intercept_plugins }}"
 
 - name: Stow interception-tools configs
   ansible.builtin.command: stow --dotfiles -Rv interception

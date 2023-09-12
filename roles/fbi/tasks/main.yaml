@@ -19,8 +19,10 @@
 - name: Copy "{{ repo }}"
   copy:
     dest: "{{ work_dir }}"
-    src: "{{ item }}"
+    src: "{{ copy_item }}"
   with_fileglob: "{{ repo }}/*"
+  loop_control:
+    loop_var: copy_item
   when: fetch == "copy"
 
 - name: Fetch "{{ repo }}"
