@@ -1,4 +1,14 @@
 ---
+- name: Install prerequisite
+  apt:
+    name:
+      - libboost-dev
+      - libevdev-dev
+      - libudev-dev
+      - libyaml-cpp-dev
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: Remove interception installation directory ({{ intercept_installdir }})
   ansible.builtin.file:
     path: "{{ intercept_installdir }}"
@@ -24,7 +34,7 @@
     make_system: "{{ item.value.make_system }}"
     fetch: "{{ item.value.fetch }}"
   loop: "{{ lookup('ansible.builtin.dict', plugins) }}"
-  when: "item.key in {{ intercept_plugins }}"
+  when: "item.key in intercept_plugins"
 
 - name: Stow compiled programs
   ansible.builtin.command: stow --dotfiles -Rv {{ item }}
