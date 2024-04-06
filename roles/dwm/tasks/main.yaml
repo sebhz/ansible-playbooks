@@ -5,7 +5,7 @@
   vars:
     prg_name: "{{ dwm_name }}"
     repo: https://git.suckless.org/dwm
-    commit: ba56fe9fea0a28d81
+    commit: "{{ dwm_commit }}"
     install_dir: "{{ dwm_installdir }}"
     fetch: git
 
@@ -15,6 +15,7 @@
   vars:
     prg_name: "{{ dmenu_name }}"
     repo: https://git.suckless.org/dmenu/
+    commit: "{{ dmenu_commit }}"
     install_dir: "{{ dmenu_installdir }}"
     fetch: git
 
