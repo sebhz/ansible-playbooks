@@ -1,0 +1,7 @@
+---
+- hosts: desktop
+  vars_files: ../configuration.yaml
+
+  roles:
+    - xscreensaver
+
