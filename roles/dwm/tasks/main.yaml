@@ -1,4 +1,13 @@
 ---
+- name: Install X11 dev packages for dwm compilation
+  apt:
+    name:
+      - libx11-dev
+      - libxft-dev
+      - libxinerama-dev
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: Compile and install {{ dwm_name }}
   include_role:
     name: fbi
@@ -23,7 +32,7 @@
   include_role:
     name: dwmblocks
 
-- name: Copy dwm helpers
+- name: Install dwm helpers
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ dwm_installdir }}/bin/{{ item | basename }}"
@@ -37,3 +46,12 @@
   loop:
     - "{{ dwm_name }}"
     - "{{ dmenu_name }}"
+
+- name: Create xsession file for dwm
+  copy:
+    dest: /usr/share/xsessions/old-x-session.desktop
+    src: "{{ dwm_name }}/usr/share/xsessions/old-x-session.desktop"
+    owner: root
+    group: root
+    mode: 0644
+  become: true

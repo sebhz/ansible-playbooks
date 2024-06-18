@@ -1,0 +1,47 @@
+---
+- name: Install X11 packages
+  apt:
+    name:
+      - aosd-cat
+      - autorandr
+      - compton
+      - dex
+      - feh
+      - pulseaudio-utils
+      - xterm
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Compile and install dwm (and dependencies)
+  include_role:
+    name: dwm
+
+- name: Compile and install xscreensaver
+  include_role:
+    name: xscreensaver
+
+- name: Fix gdm3 Xsession file (Ubuntu 22.04)
+  copy:
+    dest: /etc/gdm3/Xsession
+    src: "etc/gdm3/Xsession"
+    owner: root
+    group: root
+    mode: 0755
+  when: ansible_facts['distribution'] == "Ubuntu" and ansible_facts['lsb']['release'] == "22.04"
+  become: true
+
+- name: Clean X11 directories
+  ansible.builtin.file:
+    path: "{{ dst_dotdir }}/{{ item }}"
+    state: "absent"
+  with_items:
+    - x
+
+- name: Stow desktop environment
+  include_role:
+    name: copy_and_stow
+  vars:
+    prg_names: [ x ]
+    src_dir: "{{ src_dotdir }}"
+    dest_dir: "{{ dst_dotdir }}"
+    become_usr: "{{ ansible_user }}"

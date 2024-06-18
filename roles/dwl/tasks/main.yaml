@@ -1,0 +1,50 @@
+---
+- name: install dependencies for {{ dwl_name }}
+  apt:
+    name:
+      - build-essential
+      - libinput-dev
+      - libwayland-dev
+      - libwlroots-dev
+      - libxcb1-dev
+      - libxcb-ewmh-dev
+      - pkg-config
+      - wayland-protocols
+      - xwayland
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+  become: true
+
+- name: Compile and install {{ dwl_name }}
+  include_role:
+    name: fbi
+  vars:
+    prg_name: "{{ dwl_name }}"
+    repo: https://codeberg.org/dwl/dwl.git
+    commit: "{{ dwl_commit }}"
+    install_dir: "{{ dwl_installdir }}"
+    fetch: git
+
+- name: Install dwl helpers
+  copy:
+    src: "{{ item }}"
+    dest: "{{ dwl_installdir }}/bin/{{ item | basename }}"
+    mode: 0755
+  with_fileglob: "{{ dwl_name }}/dwl-*"
+  become: true
+
+- name: Stow dwl
+  ansible.builtin.command: stow -Rv {{ dwl_name }}
+  args:
+    chdir: "{{ install_root }}"
+  become: true
+
+- name: Compile and install somebar
+  include_role:
+    name: somebar
+
+- name: Install dwl desktop entry
+  copy:
+    src: "{{ dwl_name }}/dwl.desktop"
+    dest: /usr/share/wayland-sessions/dwl.desktop
+  become: true

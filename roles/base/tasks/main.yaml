@@ -1,0 +1,22 @@
+---
+- name: Install base packages
+  apt:
+    name:
+      - autojump
+      - build-essential
+      - clang-format
+      - git
+      - pylint
+      - python3-virtualenv
+      - screen
+      - silversearcher-ag
+      - stow
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: clean package cache and dependencies
+  apt:
+    autoclean: yes
+    autoremove: yes
+  when: ansible_facts['os_family'] == "debian"
+

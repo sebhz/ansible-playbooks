@@ -1,0 +1,4 @@
+install_root: /usr/local/stow
+dwl_commit: c2e7350f2e
+dwl_name: "dwl-{{ dwl_commit }}"
+dwl_installdir: "{{ install_root }}/{{ dwl_name }}"

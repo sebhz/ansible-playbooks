@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Good old X11 session
+Name=dwm
 Comment=Traditional X session. Sources ~/.xsession.
 Exec=default
 Icon=dwm

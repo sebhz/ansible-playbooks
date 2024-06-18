@@ -45,6 +45,9 @@
 - import_tasks: cmake.yaml
   when: make_system == "cmake"
 
+- import_tasks: ninja.yaml
+  when: make_system == "ninja"
+
 - name: Remove build dir
   ansible.builtin.file:
     path: "{{ work_dir }}"

@@ -5,37 +5,29 @@
   become: true
 
   roles:
-    - common_pkg
+    - base
     - role: headless
       become_user: "{{ ansible_user }}"
-    - desktop_pkg
-    - dwm
+    - x
+    - wayland
     - interception
 
   tasks:
+    - name: Install desktop packages
+      apt:
+        name:
+          - cmus
+          - mono-runtime
+          - xdotool
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+
     - name: Stow desktop environment
       include_role:
         name: copy_and_stow
       vars:
-        prg_names: [ cmus, x ]
+        prg_names: [ cmus ]
         src_dir: "{{ src_dotdir }}"
         dest_dir: "{{ dst_dotdir }}"
         become_usr: "{{ ansible_user }}"
-
-    - name: Fix gdm3 Xsession file (Ubuntu 22.04)
-      copy:
-        dest: /etc/gdm3/Xsession
-        src: etc/gdm3/Xsession
-        owner: root
-        group: root
-        mode: 0755
-      when: ansible_facts['distribution'] == "Ubuntu" and ansible_facts['lsb']['release'] == "22.04"
-
-    - name: Create xsession file for dwm
-      copy:
-        dest: /usr/share/xsessions/old-x-session.desktop
-        src: usr/share/xsessions/old-x-session.desktop
-        owner: root
-        group: root
-        mode: 0644
 

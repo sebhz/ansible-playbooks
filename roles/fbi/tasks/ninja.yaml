@@ -1,0 +1,18 @@
+---
+- name: Prepare compilation of {{ prg_name }} (meson)
+  ansible.builtin.command: "meson setup --prefix={{ install_dir }} build"
+  args:
+    chdir: "{{ work_dir }}"
+
+- name: Compile {{ prg_name }} (ninja)
+  ansible.builtin.command: ninja -C build
+  args:
+    chdir: "{{ work_dir }}"
+
+- name: Install {{ prg_name }} (ninja)
+  ansible.builtin.command: ninja -C build install
+  args:
+    chdir: "{{ work_dir }}"
+  become: true
+  become_user: root
+

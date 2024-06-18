@@ -16,7 +16,7 @@
   include_role:
     name: copy_and_stow
   vars:
-    prg_names: [ bash, clang, nvim, pylint, screen, vim ]
+    prg_names: [ bash, clang, pylint, screen ]
     src_dir: "{{ src_dotdir }}"
     dest_dir: "{{ dst_dotdir }}"
     become_usr: "{{ ansible_user }}"
@@ -72,5 +72,6 @@
   loop:
     - bash
 
-- name: Update nvim remote plugins
-  ansible.builtin.command: nvim +UpdateRemotePlugins +exit
+- name: Install editors
+  include_role:
+    name: vim

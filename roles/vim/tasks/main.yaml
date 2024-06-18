@@ -1,0 +1,74 @@
+---
+- name: Install base packages
+  apt:
+    name:
+      - python3-virtualenv
+      - stow
+      - vim
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: clean package cache and dependencies
+  apt:
+    autoclean: yes
+    autoremove: yes
+  when: ansible_facts['os_family'] == "debian"
+
+- name: Create nvim stow directory
+  ansible.builtin.file:
+    path: "{{ nvim_bindir }}"
+    state: directory
+
+- name: Pull nvim appimage from github
+  get_url:
+    url: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+    dest: "{{ nvim_bindir }}/nvim"
+    mode: 0755
+
+- name: Stow nvim
+  ansible.builtin.command: stow -Rv {{ item }}
+  args:
+    chdir: "{{ install_root }}"
+  with_items:
+    - neovim
+
+- name: Clean nvim virtual env directory
+  ansible.builtin.file:
+    path: "{{ host_homedir }}/.venv/nvim"
+    state: "absent"
+
+- name: Create (n)vim virtual env and install pynvim and black in it
+  ansible.builtin.pip:
+    virtualenv: "{{ host_homedir }}/.venv/nvim"
+    name:
+      - black
+      - pynvim
+  become_user: "{{ ansible_user }}"
+
+- name: Clean nvim and vim dotfile directories
+  ansible.builtin.file:
+    path: "{{ dst_dotdir }}/{{ item }}"
+    state: "absent"
+  with_items:
+    - nvim
+    - vim
+
+- name: Clean nvim and vim config directories
+  ansible.builtin.file:
+    path: "{{ host_homedir }}/.config/{{ item }}"
+    state: "absent"
+  with_items:
+    - nvim
+    - vim
+
+- name: Copy and stow vim and nvim dotfiles
+  include_role:
+    name: copy_and_stow
+  vars:
+    prg_names: [ nvim, vim ]
+    src_dir: "{{ src_dotdir }}"
+    dest_dir: "{{ dst_dotdir }}"
+    become_usr: "{{ ansible_user }}"
+
+- name: Update nvim remote plugins
+  ansible.builtin.command: nvim +UpdateRemotePlugins +exit

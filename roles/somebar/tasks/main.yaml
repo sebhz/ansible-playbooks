@@ -1,0 +1,34 @@
+---
+- name: install dependencies for {{ somebar_name }}
+  apt:
+    name:
+      - build-essential
+      - libcairo2-dev
+      - libpango1.0-dev
+      - libpangocairo-1.0-0
+      - libwayland-bin
+      - libwayland-client0
+      - libwayland-cursor0
+      - libwayland-dev
+      - meson
+      - ninja-build
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+  become: true
+
+- name: Compile and install {{ somebar_name }}
+  include_role:
+    name: fbi
+  vars:
+    prg_name: "{{ somebar_name }}"
+    repo: https://git.sr.ht/~raphi/somebar
+    commit: "{{ somebar_commit }}"
+    install_dir: "{{ somebar_installdir }}"
+    make_system: ninja
+    fetch: git
+
+- name: Stow {{ somebar_name }}
+  ansible.builtin.command: stow -Rv {{ somebar_name }}
+  args:
+    chdir: "{{ install_root }}"
+  become: true

@@ -1,0 +1,72 @@
+diff --git a/config.def.h b/config.def.h
+index a784eb4..22949a4 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -9,13 +9,13 @@ static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will
+ static const unsigned int borderpx         = 1;  /* border pixel of windows */
+ static const float rootcolor[]             = COLOR(0x222222ff);
+ static const float bordercolor[]           = COLOR(0x444444ff);
+-static const float focuscolor[]            = COLOR(0x005577ff);
+-static const float urgentcolor[]           = COLOR(0xff0000ff);
++static const float focuscolor[]            = COLOR(0xff0000ff);
++static const float urgentcolor[]           = COLOR(0x00ff00ff);
+ /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
+ static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f}; /* You can also use glsl colors */
+ 
+ /* tagging - TAGCOUNT must be no greater than 31 */
+-#define TAGCOUNT (9)
++#define TAGCOUNT (4)
+ 
+ /* logging */
+ static int log_level = WLR_ERROR;
+@@ -23,8 +23,8 @@ static int log_level = WLR_ERROR;
+ static const Rule rules[] = {
+ 	/* app_id             title       tags mask     isfloating   monitor */
+ 	/* examples: */
+-	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
+-	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
++	{ "Gimp",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
++	{ "firefox",  NULL,       1 << 3,       0,           -1 },
+ };
+ 
+ /* layout(s) */
+@@ -116,14 +116,26 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
+ #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+ 
+ /* commands */
+-static const char *termcmd[] = { "foot", NULL };
+-static const char *menucmd[] = { "wmenu-run", NULL };
++static const char *termcmd[] = { "gnome-terminal", NULL };
++static const char *menucmd[] = { "bemenu-run", NULL };
++static const char *lovolcmd[]  = { "dwm-audio-wrapper", "dn", NULL };
++static const char *hivolcmd[]  = { "dwm-audio-wrapper", "up", NULL };
++static const char *togglevolcmd[]  = { "dwm-audio-wrapper", "mt", NULL };
++static const char *capturescreencmd[]  = { "dwl-screencapture-wrapper", NULL };
++static const char *lockcmd[]  = { "dwm-screensaver-wrapper", "-w", NULL };
++static const char *sbtogglecmd[]  = { "somebar", "-c", "toggle", "all", NULL };
+ 
+ static const Key keys[] = {
+ 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
+ 	/* modifier                  key                 function        argument */
+ 	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
++	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_L,          spawn,          {.v = lockcmd} },
+ 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Return,     spawn,          {.v = termcmd} },
++	{ 0,                         XKB_KEY_XF86AudioLowerVolume, spawn, {.v = lovolcmd} },
++	{ 0,                         XKB_KEY_XF86AudioRaiseVolume, spawn, {.v = hivolcmd} },
++	{ 0,                         XKB_KEY_XF86AudioMute, spawn, {.v = togglevolcmd} },
++	{ 0,                         XKB_KEY_Print,      spawn, {.v = capturescreencmd} },
++	{ MODKEY,                    XKB_KEY_b,          spawn,          {.v = sbtogglecmd} },
+ 	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} },
+ 	{ MODKEY,                    XKB_KEY_k,          focusstack,     {.i = -1} },
+ 	{ MODKEY,                    XKB_KEY_i,          incnmaster,     {.i = +1} },
+@@ -136,9 +148,8 @@ static const Key keys[] = {
+ 	{ MODKEY,                    XKB_KEY_t,          setlayout,      {.v = &layouts[0]} },
+ 	{ MODKEY,                    XKB_KEY_f,          setlayout,      {.v = &layouts[1]} },
+ 	{ MODKEY,                    XKB_KEY_m,          setlayout,      {.v = &layouts[2]} },
+-	{ MODKEY,                    XKB_KEY_space,      setlayout,      {0} },
+ 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,      togglefloating, {0} },
+-	{ MODKEY,                    XKB_KEY_e,         togglefullscreen, {0} },
++	{ MODKEY,                    XKB_KEY_space,      togglefullscreen, {0} },
+ 	{ MODKEY,                    XKB_KEY_0,          view,           {.ui = ~0} },
+ 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright, tag,            {.ui = ~0} },
+ 	{ MODKEY,                    XKB_KEY_comma,      focusmon,       {.i = WLR_DIRECTION_LEFT} },

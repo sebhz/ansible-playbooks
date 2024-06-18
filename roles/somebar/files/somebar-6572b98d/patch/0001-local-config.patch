@@ -1,0 +1,37 @@
+From a15ae1614663f17ec3a4b8a9e7768a6e9085cd46 Mon Sep 17 00:00:00 2001
+From: seb <seb@zyglute.fr>
+Date: Tue, 18 Jun 2024 23:03:01 +0200
+Subject: [PATCH] local config
+
+
+diff --git a/src/config.def.hpp b/src/config.hpp
+similarity index 77%
+rename from src/config.def.hpp
+rename to src/config.hpp
+index 40a8c95..734ff46 100644
+--- a/src/config.def.hpp
++++ b/src/config.hpp
+@@ -10,16 +10,14 @@ constexpr int paddingX = 10;
+ constexpr int paddingY = 3;
+ 
+ // See https://docs.gtk.org/Pango/type_func.FontDescription.from_string.html
+-constexpr const char* font = "Sans 12";
++constexpr const char* font = "Sans 9";
+ 
+ constexpr ColorScheme colorInactive = {Color(0xbb, 0xbb, 0xbb), Color(0x22, 0x22, 0x22)};
+-constexpr ColorScheme colorActive = {Color(0xee, 0xee, 0xee), Color(0x00, 0x55, 0x77)};
+-constexpr const char* termcmd[] = {"foot", nullptr};
++constexpr ColorScheme colorActive = {Color(0xee, 0xee, 0xee), Color(0x00, 0x5c, 0x46)};
++constexpr const char* termcmd[] = {"gnome-terminal", nullptr};
+ 
+ static std::vector<std::string> tagNames = {
+-	"1", "2", "3",
+-	"4", "5", "6",
+-	"7", "8", "9",
++	"1", "2", "3", "4",
+ };
+ 
+ constexpr Button buttons[] = {
+-- 
+2.43.0
+

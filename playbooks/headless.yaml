@@ -3,6 +3,6 @@
   vars_files: ../configuration.yaml
   become: true
   roles:
-    - common_pkg
+    - base
     - role: headless
       become_user: "{{ ansible_user }}"

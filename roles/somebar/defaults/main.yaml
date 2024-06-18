@@ -1,0 +1,4 @@
+install_root: /usr/local/stow
+somebar_commit: 6572b98d
+somebar_name: "somebar-{{ somebar_commit }}"
+somebar_installdir: "{{ install_root }}/{{ somebar_name }}"

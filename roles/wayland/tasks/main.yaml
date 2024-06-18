@@ -1,0 +1,15 @@
+---
+- name: Install Wayland packages
+  apt:
+    name:
+      - bemenu
+      - grim
+      - swaybg
+      - swayidle
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Compile and install dwl (and dependencies)
+  include_role:
+    name: dwl
+
