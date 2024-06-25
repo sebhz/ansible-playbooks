@@ -33,6 +33,11 @@
   with_fileglob: "{{ dwl_name }}/dwl-*"
   become: true
 
+- name: Remove default dwl desktop entry
+  ansible.builtin.file:
+    path: "{{ dwl_installdir }}/share/wayland-sessions"
+    state: absent
+
 - name: Stow dwl
   ansible.builtin.command: stow -Rv {{ dwl_name }}
   args:

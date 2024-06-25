@@ -1,5 +1,6 @@
 headless:
   hosts:
+    Endoctrine:
     work_headless_host1:
 
 desktop:

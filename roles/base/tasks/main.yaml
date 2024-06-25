@@ -18,5 +18,4 @@
   apt:
     autoclean: yes
     autoremove: yes
-  when: ansible_facts['os_family'] == "debian"
-
+  when: ansible_facts['os_family'] == "Debian"

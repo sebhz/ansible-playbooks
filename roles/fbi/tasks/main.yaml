@@ -2,12 +2,12 @@
 - name: Clean build directory
   ansible.builtin.file:
     path: "{{ work_dir }}"
-    state: "absent"
+    state: absent
 
 - name: Recreate build directory
   ansible.builtin.file:
     path: "{{ work_dir }}"
-    state: "directory"
+    state: directory
 
 - name: Pull "{{ repo }}" from git
   git:
@@ -51,5 +51,4 @@
 - name: Remove build dir
   ansible.builtin.file:
     path: "{{ work_dir }}"
-    state: "absent"
-
+    state: absent

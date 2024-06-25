@@ -1,16 +1,29 @@
 ---
-- name: Copy directories
+- name: "Check if program {{ dest_dir }}/{{ prg_name }} is already there"
+  stat:
+    path: "{{ dest_dir }}/{{ prg_name }}"
+  register: stow_there
+
+- name: Unstow {{ prg_name }}
+  ansible.builtin.command: stow --dotfiles -Dv "{{ dest_dir }}/{{ prg_name }}"
+  when: stow_there.stat.exists
+
+- name: "Remove {{ prg_name }} directory"
+  ansible.builtin.file:
+    path: "{{ dest_dir }}/{{ prg_name }}"
+    state: absent
+  when: stow_there.stat.exists
+
+- name: "Copy {{ prg_name }} directory"
   copy:
     dest: "{{ dest_dir }}"
-    src: "{{ src_dir }}/{{ item }}"
+    src: "{{ src_dir }}/{{ prg_name }}"
     owner: "{{ become_usr }}"
     mode: 0755
-  with_items: "{{ prg_names }}"
   become_user: "{{ become_usr }}"
 
-- name: Stow directories
-  ansible.builtin.command: stow --dotfiles -Rv {{ item }}
+- name: Restow {{ prg_name }}
+  ansible.builtin.command: stow --dotfiles -Rv {{ prg_name }}
   args:
     chdir: "{{ dest_dir }}"
-  with_items: "{{ prg_names }}"
-
+  become_user: "{{ become_usr }}"

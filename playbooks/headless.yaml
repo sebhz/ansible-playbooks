@@ -2,7 +2,7 @@
 - hosts: headless
   vars_files: ../configuration.yaml
   become: true
+
   roles:
     - base
-    - role: headless
-      become_user: "{{ ansible_user }}"
+    - headless

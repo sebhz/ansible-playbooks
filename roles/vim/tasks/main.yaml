@@ -12,7 +12,7 @@
   apt:
     autoclean: yes
     autoremove: yes
-  when: ansible_facts['os_family'] == "debian"
+  when: ansible_facts['os_family'] == "Debian"
 
 - name: Create nvim stow directory
   ansible.builtin.file:
@@ -43,7 +43,7 @@
     name:
       - black
       - pynvim
-  become_user: "{{ ansible_user }}"
+  become: false
 
 - name: Clean nvim and vim dotfile directories
   ansible.builtin.file:
@@ -65,10 +65,13 @@
   include_role:
     name: copy_and_stow
   vars:
-    prg_names: [ nvim, vim ]
+    prg_name: "{{ item }}"
     src_dir: "{{ src_dotdir }}"
     dest_dir: "{{ dst_dotdir }}"
     become_usr: "{{ ansible_user }}"
+  with_items:
+    - nvim
+    - vim
 
 - name: Update nvim remote plugins
   ansible.builtin.command: nvim +UpdateRemotePlugins +exit

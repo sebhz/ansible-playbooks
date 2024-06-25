@@ -11,25 +11,33 @@
   with_items:
     - "{{ host_homedir }}/.config"
     - "{{ dst_dotdir }}"
+  become_user: "{{ ansible_user }}"
 
 - name: Copy and stow headless dotfiles
   include_role:
     name: copy_and_stow
   vars:
-    prg_names: [ bash, clang, pylint, screen ]
+    prg_name: "{{ item }}"
     src_dir: "{{ src_dotdir }}"
     dest_dir: "{{ dst_dotdir }}"
     become_usr: "{{ ansible_user }}"
+  with_items:
+    - bash
+    - clang
+    - pylint
+    - screen
 
 - name: Prepare git directory
   file:
     path: "{{ dst_dotdir }}/git"
     state: directory
+  become_user: "{{ ansible_user }}"
 
 - name: Copy gitconfig
   ansible.builtin.template:
     src: "{{ src_dotdir }}/git/dot-gitconfig.j2"
     dest: "{{ dst_dotdir }}/git/dot-gitconfig"
+  become_user: "{{ ansible_user }}"
 
 - name: Stow gitconfig
   ansible.builtin.command: stow --dotfiles -Rv {{ item }}
@@ -37,6 +45,7 @@
     chdir: "{{ dst_dotdir }}"
   with_items:
     - git
+  become_user: "{{ ansible_user }}"
 
 - name: Unstow bash
   ansible.builtin.command: stow --dotfiles -Dv {{ item }}
@@ -44,14 +53,17 @@
     chdir: "{{ dst_dotdir }}"
   with_items:
     - bash
+  become_user: "{{ ansible_user }}"
 
 - name: Select Debian dircolors
   ansible.builtin.command: mv "{{ dst_dotdir }}/bash/dot-dircolors_debian" "{{ dst_dotdir }}/bash/dot-dircolors"
   when: ansible_facts['os_family'] == "Debian"
+  become_user: "{{ ansible_user }}"
 
 - name: Select Redhat dircolors
   ansible.builtin.command: mv "{{ dst_dotdir }}/bash/dot-dircolors_centos" "{{ dst_dotdir }}/bash/dot-dircolors"
   when: ansible_facts['os_family'] == "Redhat"
+  become_user: "{{ ansible_user }}"
 
 - name: Remove Debian dircolors
   ansible.builtin.file:
@@ -71,6 +83,7 @@
     chdir: "{{ dst_dotdir }}"
   loop:
     - bash
+  become_user: "{{ ansible_user }}"
 
 - name: Install editors
   include_role:
