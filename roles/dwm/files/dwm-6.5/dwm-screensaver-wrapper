@@ -6,13 +6,13 @@ if [[ "$_cmus_playing" == "playing" ]]; then
     cmus-remote -u
 fi
 
+declare -r WP_DIR="${HOME}/Pictures/screensaver"
 if [[ "$#" == "1" && $1 == "-w" ]]; then # Wayland compositor
-  declare -r WP_DIR="${HOME}/Pictures/wallpapers"
   declare -r _img_file="$(find ${WP_DIR} -type f | sort -R | head -1)"
   swaylock -f -c 000000 -i "$_img_file" --scaling=fit
 else # Good old X window manager
   # Change image subdirectory on each invocation
-  declare -r _img_dir="$(ls -d ${HOME}/Pictures/screensaver/* | sort -R | head -1)"
+  declare -r _img_dir="$(ls -d ${WP_DIR}/* | sort -R | head -1)"
   sed -i -e "s#imageDirectory:.*#imageDirectory: $_img_dir#" ${HOME}/.xscreensaver
   xscreensaver-command -lock
 fi
