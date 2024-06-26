@@ -30,13 +30,6 @@
   when: ansible_facts['distribution'] == "Ubuntu" and ansible_facts['lsb']['release'] == "22.04"
   become: true
 
-- name: Clean X11 directories
-  ansible.builtin.file:
-    path: "{{ dst_dotdir }}/{{ item }}"
-    state: "absent"
-  with_items:
-    - x
-
 - name: Stow desktop environment
   include_role:
     name: copy_and_stow

@@ -45,22 +45,6 @@
       - pynvim
   become: false
 
-- name: Clean nvim and vim dotfile directories
-  ansible.builtin.file:
-    path: "{{ dst_dotdir }}/{{ item }}"
-    state: "absent"
-  with_items:
-    - nvim
-    - vim
-
-- name: Clean nvim and vim config directories
-  ansible.builtin.file:
-    path: "{{ host_homedir }}/.config/{{ item }}"
-    state: "absent"
-  with_items:
-    - nvim
-    - vim
-
 - name: Copy and stow vim and nvim dotfiles
   include_role:
     name: copy_and_stow
