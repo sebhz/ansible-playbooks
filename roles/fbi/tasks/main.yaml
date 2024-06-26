@@ -37,7 +37,7 @@
   args:
     chdir: "{{ work_dir }}"
   # Sort patches so that they are applied in consistent order
-  loop: "{{ query('fileglob', '{{ prg_name }}/patch/*') | sort }}"
+  loop: "{{ query('fileglob', '{{ prg_name }}/patch/*.patch') | sort }}"
 
 - import_tasks: make.yaml
   when: make_system == "make"

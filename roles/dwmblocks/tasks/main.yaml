@@ -28,6 +28,13 @@
     - "{{ astro_dir }}/meeus/C/lib/libmeeus.a"
     - "{{ astro_dir }}/meeus/C/include/meeus.h"
 
+- name: Patch dwmblocks
+  ansible.builtin.command: git apply {{ item }}
+  args:
+    chdir: "{{ dwmblocks_dir }}"
+  # Sort patches so that they are applied in consistent order
+  loop: "{{ query('fileglob', 'patch/*.patch') | sort }}"
+
 - name: Compile dwmblocks
   ansible.builtin.command: make
   args:
