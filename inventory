@@ -1,12 +1,9 @@
 headless:
   hosts:
-    Endoctrine:
-    work_headless_host1:
 
 desktop:
   hosts:
     Endoctrine:
-    work_desktop_host1:
 
 home:
   hosts:
@@ -14,5 +11,3 @@ home:
 
 work:
   hosts:
-    work_headless_host1:
-    work_desktop_host1:
