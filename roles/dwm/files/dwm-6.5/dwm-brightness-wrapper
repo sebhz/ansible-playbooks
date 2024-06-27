@@ -1,0 +1,31 @@
+#!/bin/bash
+#set -x
+
+declare -x DEVICE="intel_backlight"
+declare -x STEP_PCT=2
+
+declare -x BL_PATH="/sys/class/backlight/${DEVICE}"
+if [[ -d "${BL_PATH}" ]] then
+  declare -x MAX_BL="$(cat ${BL_PATH}/max_brightness)"
+  declare -x CUR_BL="$(cat ${BL_PATH}/brightness)"
+  declare -x PCT="$(( ${MAX_BL} * ${STEP_PCT} / 100 ))"
+  echo "$DEVICE $MAX_BL $PCT"
+
+  case "$1" in
+  "up")
+    _v="$(( ${CUR_BL} + ${PCT} ))"
+    if [[ "${_v}" -lt "${MAX_BL}" ]] then
+      echo "${_v}" > "${BL_PATH}/brightness"
+    fi
+    ;;
+  "dn")
+    _v="$(( ${CUR_BL} - ${PCT} ))"
+    if [[ "${_v}" -gt 0 ]] then
+      echo "${_v}" > "${BL_PATH}/brightness"
+    fi
+    ;;
+  "gb")
+    echo "${CUR_BL}"
+    ;;
+  esac
+fi

@@ -1,11 +1,11 @@
-From defb3f540a0ad41b324fb0e23b24778545be6f75 Mon Sep 17 00:00:00 2001
+From d939cfc866ba81e40e4bf6a1d3743604bcb86b47 Mon Sep 17 00:00:00 2001
 From: sebhz <seb@zyglute.fr>
 Date: Mon, 7 Nov 2022 19:53:40 +0100
 Subject: [PATCH 2/3] Personal config
 
 
 diff --git a/config.def.h b/config.def.h
-index 2e9276a..195e322 100644
+index 2e9276a..7a24fff 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -3,37 +3,44 @@
@@ -62,7 +62,7 @@ index 2e9276a..195e322 100644
  };
  
  /* layout(s) */
-@@ -62,13 +69,33 @@ static const Layout layouts[] = {
+@@ -62,13 +69,37 @@ static const Layout layouts[] = {
  
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -80,6 +80,8 @@ index 2e9276a..195e322 100644
 +static const char *capturescreencmd[]  = { "dwm-screencapture-wrapper", NULL };
 +static const char *showosdcmd[] = { "dwm-osd-wrapper", NULL };
 +static const char *passmgrcmd[] = { "dwm-passmgr-wrapper", NULL };
++static const char *lobrightnesscmd[]  = { "dwm-brightness-wrapper", "dn", NULL };
++static const char *hibrightnesscmd[]  = { "dwm-brightness-wrapper", "up", NULL };
  
 -static const Key keys[] = {
 +static Key keys[] = {
@@ -95,11 +97,13 @@ index 2e9276a..195e322 100644
 +	{ 0,         XF86XK_AudioRaiseVolume,      spawn,          {.v = hivolcmd } },
 +	{ 0,                XF86XK_AudioPlay,      spawn,          {.v = toggleaudioplaycmd } },
 +	{ 0,                   XF86XK_Search,      spawn,          {.v = showosdcmd } },
++	{ 0,        XF86XK_MonBrightnessDown,      spawn,          {.v = lobrightnesscmd} },
++	{ 0,          XF86XK_MonBrightnessUp,      spawn,          {.v = hibrightnesscmd} },
 +	{ 0,                            XK_Print,  spawn,          {.v = capturescreencmd } },
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-@@ -90,6 +117,10 @@ static const Key keys[] = {
+@@ -90,6 +121,10 @@ static const Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
@@ -110,7 +114,7 @@ index 2e9276a..195e322 100644
  	TAGKEYS(                        XK_1,                      0)
  	TAGKEYS(                        XK_2,                      1)
  	TAGKEYS(                        XK_3,                      2)
-@@ -99,7 +130,15 @@ static const Key keys[] = {
+@@ -99,7 +134,15 @@ static const Key keys[] = {
  	TAGKEYS(                        XK_7,                      6)
  	TAGKEYS(                        XK_8,                      7)
  	TAGKEYS(                        XK_9,                      8)
@@ -128,7 +132,7 @@ index 2e9276a..195e322 100644
  
  /* button definitions */
 diff --git a/config.mk b/config.mk
-index 8efca9a..ff270e0 100644
+index 8efca9a..ba5ea0c 100644
 --- a/config.mk
 +++ b/config.mk
 @@ -4,7 +4,7 @@ VERSION = 6.5
@@ -136,7 +140,7 @@ index 8efca9a..ff270e0 100644
  
  # paths
 -PREFIX = /usr/local
-+PREFIX = /usr/local/stow/dwm-6.4
++PREFIX = /usr/local/stow/dwm-6.5
  MANPREFIX = ${PREFIX}/share/man
  
  X11INC = /usr/X11R6/include
@@ -153,5 +157,5 @@ index c77811f..1c06a01 100644
  #include <X11/extensions/Xinerama.h>
  #endif /* XINERAMA */
 -- 
-2.34.1
+2.43.0
 

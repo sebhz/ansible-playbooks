@@ -1,5 +1,5 @@
 diff --git a/config.def.h b/config.def.h
-index a784eb4..22949a4 100644
+index a784eb4..4c144e5 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -9,13 +9,13 @@ static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will
@@ -30,7 +30,7 @@ index a784eb4..22949a4 100644
  };
  
  /* layout(s) */
-@@ -116,14 +116,26 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
+@@ -116,14 +116,30 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
  #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
  
  /* commands */
@@ -44,6 +44,8 @@ index a784eb4..22949a4 100644
 +static const char *capturescreencmd[]  = { "dwl-screencapture-wrapper", NULL };
 +static const char *lockcmd[]  = { "dwm-screensaver-wrapper", "-w", NULL };
 +static const char *sbtogglecmd[]  = { "somebar", "-c", "toggle", "all", NULL };
++static const char *lobrightnesscmd[]  = { "dwm-brightness-wrapper", "dn", NULL };
++static const char *hibrightnesscmd[]  = { "dwm-brightness-wrapper", "up", NULL };
  
  static const Key keys[] = {
  	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
@@ -51,15 +53,17 @@ index a784eb4..22949a4 100644
  	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
 +	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_L,          spawn,          {.v = lockcmd} },
  	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Return,     spawn,          {.v = termcmd} },
-+	{ 0,                         XKB_KEY_XF86AudioLowerVolume, spawn, {.v = lovolcmd} },
-+	{ 0,                         XKB_KEY_XF86AudioRaiseVolume, spawn, {.v = hivolcmd} },
-+	{ 0,                         XKB_KEY_XF86AudioMute, spawn, {.v = togglevolcmd} },
-+	{ 0,                         XKB_KEY_Print,      spawn, {.v = capturescreencmd} },
++	{ 0,                         XKB_KEY_XF86MonBrightnessDown, spawn, {.v = lobrightnesscmd} },
++	{ 0,                         XKB_KEY_XF86MonBrightnessUp,   spawn, {.v = hibrightnesscmd} },
++	{ 0,                         XKB_KEY_XF86AudioLowerVolume,  spawn, {.v = lovolcmd} },
++	{ 0,                         XKB_KEY_XF86AudioRaiseVolume,  spawn, {.v = hivolcmd} },
++	{ 0,                         XKB_KEY_XF86AudioMute,         spawn, {.v = togglevolcmd} },
++	{ 0,                         XKB_KEY_Print,      spawn,          {.v = capturescreencmd} },
 +	{ MODKEY,                    XKB_KEY_b,          spawn,          {.v = sbtogglecmd} },
  	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} },
  	{ MODKEY,                    XKB_KEY_k,          focusstack,     {.i = -1} },
  	{ MODKEY,                    XKB_KEY_i,          incnmaster,     {.i = +1} },
-@@ -136,9 +148,8 @@ static const Key keys[] = {
+@@ -136,9 +152,8 @@ static const Key keys[] = {
  	{ MODKEY,                    XKB_KEY_t,          setlayout,      {.v = &layouts[0]} },
  	{ MODKEY,                    XKB_KEY_f,          setlayout,      {.v = &layouts[1]} },
  	{ MODKEY,                    XKB_KEY_m,          setlayout,      {.v = &layouts[2]} },
