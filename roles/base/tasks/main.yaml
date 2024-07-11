@@ -5,7 +5,9 @@
       - autojump
       - build-essential
       - clang-format
+      - cmake
       - git
+      - meson
       - pylint
       - python3-virtualenv
       - screen

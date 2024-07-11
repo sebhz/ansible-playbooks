@@ -4,12 +4,13 @@
     path: "{{ dst_dotdir }}"
     state: "absent"
 
-- name: Recreate dotfile directory and config directory
+- name: Recreate dotfile, virtualenv and config directories
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
   with_items:
     - "{{ host_homedir }}/.config"
+    - "{{ host_homedir }}/.venv"
     - "{{ dst_dotdir }}"
   become_user: "{{ ansible_user }}"
 

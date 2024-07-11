@@ -2,14 +2,21 @@
 - name: Install Wayland packages
   apt:
     name:
-      - bemenu
       - grim
       - swaybg
       - swayidle
     state: present
   when: ansible_facts['os_family'] == "Debian"
 
-- name: Compile and install dwl (and dependencies)
+- name: Install bemenu (Ubuntu 24.04)
+  apt:
+    name:
+      - bemenu
+    state: present
+  when: ansible_facts['distribution'] == "Ubuntu" and ansible_facts['lsb']['release'] is version("24.04", ">=")
+
+- name: Compile and install dwl and dependencies (Ubuntu 24.04)
   include_role:
     name: dwl
+  when: ansible_facts['distribution'] == "Ubuntu" and ansible_facts['lsb']['release'] is version("24.04", ">=")
 
