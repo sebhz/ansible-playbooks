@@ -1,0 +1,12 @@
+diff --git a/blocks.h b/blocks.h
+index 7abb1b2..59c3a1a 100644
+--- a/blocks.h
++++ b/blocks.h
+@@ -7,6 +7,7 @@ static const Block blocks[] = {
+     {"Up: ", "", uptime, 60, 0},
+     {"", "", fuzzytime, 60, 0},
+     {"", "", sun, 5, 0},
++    {"", "nafer.py --short --uncached", NULL, 8*60*60, 0}
+ };
+ 
+ //sets delimeter between status commands. NULL character ('\0') means no delimeter.
