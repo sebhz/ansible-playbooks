@@ -1,0 +1,4 @@
+install_root: /usr/local/stow
+wmenu_commit: 0.1.9
+wmenu_name: "wmenu-{{ wmenu_commit }}"
+wmenu_installdir: "{{ install_root }}/{{ wmenu_name }}"

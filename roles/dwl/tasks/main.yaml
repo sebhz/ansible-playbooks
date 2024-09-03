@@ -48,6 +48,10 @@
   include_role:
     name: somebar
 
+- name: Compile and install wmenu
+  include_role:
+    name: wmenu
+
 - name: Install dwl desktop entry
   copy:
     src: "{{ dwl_name }}/dwl.desktop"

@@ -1,0 +1,34 @@
+---
+- name: install dependencies for {{ wmenu_name }}
+  apt:
+    name:
+      - build-essential
+      - libcairo2-dev
+      - libpango1.0-dev
+      - libpangocairo-1.0-0
+      - libwayland-bin
+      - libwayland-client0
+      - libwayland-cursor0
+      - libwayland-dev
+      - meson
+      - ninja-build
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+  become: true
+
+- name: Compile and install {{ wmenu_name }}
+  include_role:
+    name: fbi
+  vars:
+    prg_name: "{{ wmenu_name }}"
+    repo: https://codeberg.org/adnano/wmenu.git
+    commit: "{{ wmenu_commit }}"
+    install_dir: "{{ wmenu_installdir }}"
+    make_system: ninja
+    fetch: git
+
+- name: Stow {{ wmenu_name }}
+  ansible.builtin.command: stow -Rv {{ wmenu_name }}
+  args:
+    chdir: "{{ install_root }}"
+  become: true

@@ -1,8 +1,8 @@
 diff --git a/config.mk b/config.mk
-index 906f403..f7fa488 100644
+index 6fb4fb3..37ad923 100644
 --- a/config.mk
 +++ b/config.mk
-@@ -11,5 +11,5 @@ DATADIR = $(PREFIX)/share
+@@ -11,7 +11,7 @@ DATADIR = $(PREFIX)/share
  XWAYLAND =
  XLIBS =
  # Uncomment to build XWayland support
@@ -10,3 +10,5 @@ index 906f403..f7fa488 100644
 -#XLIBS = xcb xcb-icccm
 +XWAYLAND = -DXWAYLAND
 +XLIBS = xcb xcb-icccm
+ 
+ CC = gcc

@@ -1,5 +1,5 @@
 diff --git a/config.def.h b/config.def.h
-index a784eb4..4c144e5 100644
+index 22d2171..8359c1b 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -9,13 +9,13 @@ static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will
@@ -19,7 +19,7 @@ index a784eb4..4c144e5 100644
  
  /* logging */
  static int log_level = WLR_ERROR;
-@@ -23,8 +23,8 @@ static int log_level = WLR_ERROR;
+@@ -24,8 +24,8 @@ static int log_level = WLR_ERROR;
  static const Rule rules[] = {
  	/* app_id             title       tags mask     isfloating   monitor */
  	/* examples: */
@@ -30,14 +30,13 @@ index a784eb4..4c144e5 100644
  };
  
  /* layout(s) */
-@@ -116,14 +116,30 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
+@@ -119,14 +119,30 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
  #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
  
  /* commands */
 -static const char *termcmd[] = { "foot", NULL };
--static const char *menucmd[] = { "wmenu-run", NULL };
 +static const char *termcmd[] = { "gnome-terminal", NULL };
-+static const char *menucmd[] = { "bemenu-run", NULL };
+ static const char *menucmd[] = { "wmenu-run", NULL };
 +static const char *lovolcmd[]  = { "dwm-audio-wrapper", "dn", NULL };
 +static const char *hivolcmd[]  = { "dwm-audio-wrapper", "up", NULL };
 +static const char *togglevolcmd[]  = { "dwm-audio-wrapper", "mt", NULL };
@@ -63,7 +62,7 @@ index a784eb4..4c144e5 100644
  	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} },
  	{ MODKEY,                    XKB_KEY_k,          focusstack,     {.i = -1} },
  	{ MODKEY,                    XKB_KEY_i,          incnmaster,     {.i = +1} },
-@@ -136,9 +152,8 @@ static const Key keys[] = {
+@@ -139,9 +155,8 @@ static const Key keys[] = {
  	{ MODKEY,                    XKB_KEY_t,          setlayout,      {.v = &layouts[0]} },
  	{ MODKEY,                    XKB_KEY_f,          setlayout,      {.v = &layouts[1]} },
  	{ MODKEY,                    XKB_KEY_m,          setlayout,      {.v = &layouts[2]} },
