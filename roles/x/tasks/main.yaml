@@ -20,6 +20,10 @@
   include_role:
     name: xscreensaver
 
+- name: Fetch and install autorandr
+  include_role:
+    name: autorandr
+
 - name: Fix gdm3 Xsession file (Ubuntu 22.04)
   copy:
     dest: /etc/gdm3/Xsession

@@ -1,0 +1,46 @@
+---
+- name: Create temporary directory
+  ansible.builtin.file:
+    path: "{{ work_dir }}"
+    state: directory
+
+- name: "Fetch autorandr version {{ autorandr_version }}"
+  git:
+    repo: "{{ autorandr_repo }}"
+    dest: "{{ work_dir }}"
+    version: "{{ autorandr_version }}"
+
+- name: Create stow directory in workdir
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ work_dir }}/stow/autorandr_{{ autorandr_version }}/bin"
+    - "{{ work_dir }}/stow/autorandr_{{ autorandr_version }}/share/man/man1"
+
+- name: Copy executable
+  copy:
+    dest: "{{ work_dir }}/stow/autorandr_{{ autorandr_version }}/bin/autorandr"
+    src: "{{ work_dir }}/autorandr.py"
+
+- name: Copy man page
+  copy:
+    dest: "{{ work_dir }}/stow/autorandr_{{ autorandr_version }}/share/man/man1"
+    src: "{{ work_dir }}/autorandr.1"
+
+- name: Stow executables
+  include_role:
+    name: copy_and_stow
+  vars:
+    prg_name: "{{ item }}"
+    src_dir: "{{ work_dir }}/stow"
+    dest_dir: /usr/local/stow
+    become_usr: root
+  with_items:
+    - "autorandr_{{ autorandr_version }}" 
+
+- name: Remove temporary directory
+  ansible.builtin.file:
+    path: "{{ work_dir }}"
+    state: absent
+

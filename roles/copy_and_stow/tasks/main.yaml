@@ -5,7 +5,10 @@
   register: stow_there
 
 - name: Unstow {{ prg_name }}
-  ansible.builtin.command: stow --dotfiles -Dv "{{ dest_dir }}/{{ prg_name }}"
+  ansible.builtin.command: stow --dotfiles -Dv "{{ prg_name }}"
+  args:
+    chdir: "{{ dest_dir }}"
+  become_user: "{{ become_usr }}"
   when: stow_there.stat.exists
 
 - name: "Remove {{ prg_name }} directory"

@@ -1,11 +1,9 @@
 #!/bin/bash
 #set -x
 
-# Line below unnecessary if autorandr launched through systemd
-#[[ -x "$(which autorandr)" ]] && autorandr --batch --change --default default
 [[ -n "$(which compton)" ]] &&  { compton & }
 
-# xscreensaver will be launched as part of xdg autostart
+# xscreensaver and autorandr will be launched as part of xdg autostart
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 [[ -x "$(which dex)" ]] && dex --autostart --environment dwm

@@ -1,0 +1,5 @@
+---
+autorandr_version: 1.15
+work_dir: "/tmp/autorandr_{{ autorandr_version }}"
+autorandr_repo: https://github.com/phillipberndt/autorandr
+
