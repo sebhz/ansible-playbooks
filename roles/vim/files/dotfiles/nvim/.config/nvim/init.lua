@@ -44,6 +44,14 @@ vim.cmd [[
     colorscheme peaksea
 ]]
 
+-- Transparent background
+vim.cmd [[
+  highlight Normal guibg=none
+  highlight NonText guibg=none
+  highlight Normal ctermbg=none
+  highlight NonText ctermbg=none
+]]
+
 -- No tab expansion for makefiles
 -- 2 spaces tabs for shell files
 local autocmd_filetype_tbl = {
