@@ -66,6 +66,13 @@
     dest: "{{ work_dir }}"
     remote_src: yes
 
+- name: Patch xscreensaver
+  ansible.builtin.command: patch -p1 -i {{ item }}
+  args:
+    chdir: "{{ work_dir }}/xscreensaver-{{ xscreensaver_version }}"
+  # Sort patches so that they are applied in consistent order
+  loop: "{{ query('fileglob', 'patch/*.patch') | sort }}"
+
 - name: Configure xscreensaver
   command: "./configure --prefix=/usr/local/stow/xscreensaver-{{ xscreensaver_version }}"
   args:

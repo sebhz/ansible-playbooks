@@ -1,0 +1,13 @@
+diff --git a/hacks/xscreensaver-getimage.c b/hacks/xscreensaver-getimage.c
+index b2564b9..f30a07c 100644
+--- a/hacks/xscreensaver-getimage.c
++++ b/hacks/xscreensaver-getimage.c
+@@ -2048,6 +2048,8 @@ get_image (Screen *screen,
+         /* while ((dot = strchr(f2, '/'))) *dot = '\n'; */
+         /* Replace slashes with spaces */
+         /* while ((dot = strchr(f2, '/'))) *dot = ' '; */
++        /* Replace underscores with spaces */
++        while ((dot = strchr(f2, '_'))) *dot = ' ';
+ 
+         XChangeProperty (dpy, window, a, XA_STRING, 8, PropModeReplace, 
+                          (unsigned char *) f2, strlen(f2));
