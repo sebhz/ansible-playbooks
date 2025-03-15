@@ -1,0 +1,15 @@
+[Unit]
+Description=Filen CLI Sync Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/filen-cli sync --quiet --continuous
+Restart=on-failure
+RestartSec=5
+User=seb
+WorkingDirectory={{ host_homedir }}
+
+[Install]
+WantedBy=multi-user.target
