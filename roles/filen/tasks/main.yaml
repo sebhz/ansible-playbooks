@@ -18,7 +18,7 @@
 
 - name: Install latest filen-cli
   get_url:
-    url: "https://github.com/FilenCloudDienste/filen-cli/releases/download/v0.0.29/filen-cli-v0.0.29-linux-x64"
+    url: "https://github.com/FilenCloudDienste/filen-cli/releases/download/v{{ filen_cli_ver }}/filen-cli-v{{ filen_cli_ver }}-linux-x64"
     dest: "/tmp/filen/bin/filen-cli"
     mode: '755'
 
