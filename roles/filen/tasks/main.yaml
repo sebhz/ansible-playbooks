@@ -1,4 +1,8 @@
 ---
+- name: Stop filen daemon
+  ansible.builtin.command: systemctl stop filen-sync
+  become: true
+
 - name: Clean filen installation
   ansible.builtin.file:
     path: "{{ host_homedir }}/.filen-cli"
@@ -16,7 +20,7 @@
     path: "/tmp/filen/bin"
     state: directory
 
-- name: Install latest filen-cli
+- name: "Install filen-cli (version {{ filen_cli_ver }})"
   get_url:
     url: "https://github.com/FilenCloudDienste/filen-cli/releases/download/v{{ filen_cli_ver }}/filen-cli-v{{ filen_cli_ver }}-linux-x64"
     dest: "/tmp/filen/bin/filen-cli"
@@ -51,4 +55,3 @@
     dest: "{{ host_homedir }}/.filen-cli"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-

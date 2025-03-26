@@ -17,8 +17,9 @@
     name: dwm
 
 - name: Compile and install xscreensaver
-  include_role:
+  import_role:
     name: xscreensaver
+  tags: xscreensaver_tag
 
 - name: Fetch and install autorandr
   include_role:

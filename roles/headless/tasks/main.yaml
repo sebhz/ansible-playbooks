@@ -86,6 +86,11 @@
     - bash
   become_user: "{{ ansible_user }}"
 
+- name: Install filen sync
+  import_role:
+    name: filen
+  tags: filen_tag
+
 - name: Install editors
   include_role:
     name: vim
