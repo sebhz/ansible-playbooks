@@ -8,7 +8,7 @@ Type=simple
 ExecStart=/usr/local/bin/filen-cli sync --quiet --continuous
 Restart=on-failure
 RestartSec=5
-User=seb
+User={{ ansible_user }}
 WorkingDirectory={{ host_homedir }}
 
 [Install]
