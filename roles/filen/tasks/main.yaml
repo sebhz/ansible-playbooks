@@ -24,13 +24,13 @@
 
 - name: Create temporary stow directory
   ansible.builtin.file:
-    path: "/tmp/filen/bin"
+    path: "{{ tmp_template_root }}/bin"
     state: directory
 
 - name: "Install filen-cli (version {{ filen_cli_ver }})"
   get_url:
     url: "https://github.com/FilenCloudDienste/filen-cli/releases/download/v{{ filen_cli_ver }}/filen-cli-v{{ filen_cli_ver }}-linux-x64"
-    dest: "/tmp/filen/bin/filen-cli"
+    dest: "{{ tmp_template_root }}/bin/filen-cli"
     mode: '755'
 
 - name: Move filen-cli executable to global path
@@ -44,7 +44,7 @@
 
 - name: Clean temporary stow directory
   ansible.builtin.file:
-    path: "{{ tmp_template_dir }}"
+    path: "{{ tmp_template_root }}"
     state: absent
 
 - name: Copy filen syncPairs definition
@@ -63,7 +63,6 @@
   ansible.builtin.template:
     src: "templates/dotfiles/filen/.config/systemd/user/{{ item }}.j2"
     dest: "{{ tmp_template_dir }}/{{ item }}"
-    mode: 0644
   loop:
     - filen-sync.service
 
