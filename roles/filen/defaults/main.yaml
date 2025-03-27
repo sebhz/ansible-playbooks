@@ -1,0 +1,2 @@
+tmp_template_root: /tmp/filen
+tmp_template_dir: "{{ tmp_template_root }}/.config/systemd/user"

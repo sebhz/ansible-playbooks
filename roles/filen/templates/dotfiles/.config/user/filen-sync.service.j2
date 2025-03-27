@@ -6,9 +6,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/filen-cli sync --skip-update --quiet --continuous
-Restart=on-failure
-RestartSec=5
-User={{ ansible_user }}
+Restart=no
 WorkingDirectory={{ host_homedir }}
 
 [Install]

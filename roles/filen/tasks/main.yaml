@@ -1,7 +1,14 @@
 ---
+# Ignore errors in case filen-sync service is not already installed
 - name: Stop filen daemon
-  ansible.builtin.command: systemctl stop filen-sync
-  become: true
+  ansible.builtin.command: systemctl --user stop filen-sync
+  ignore_errors: true
+  become_user: "{{ ansible_user }}"
+
+- name: Disable filen daemon
+  ansible.builtin.command: systemctl --user disable filen-sync
+  ignore_errors: true
+  become_user: "{{ ansible_user }}"
 
 - name: Clean filen installation
   ansible.builtin.file:
@@ -37,17 +44,8 @@
 
 - name: Clean temporary stow directory
   ansible.builtin.file:
-    path: "/tmp/filen"
+    path: "{{ tmp_template_dir }}"
     state: absent
-
-- name: Overwrite filen-cli systemd service file
-  ansible.builtin.template:
-    src: "templates/etc/systemd/system/{{ item }}.j2"
-    dest: "/etc/systemd/system/{{ item }}"
-    mode: 0644
-  loop:
-    - filen-sync.service
-  become_user: root
 
 - name: Copy filen syncPairs definition
   ansible.builtin.copy:
@@ -55,3 +53,45 @@
     dest: "{{ host_homedir }}/.filen-cli"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
+
+- name: Create temporary structure
+  ansible.builtin.file:
+    path: "{{ tmp_template_dir }}"
+    state: directory
+
+- name: Create filen sync systemd user unit file from template
+  ansible.builtin.template:
+    src: "templates/dotfiles/filen/.config/systemd/user/{{ item }}.j2"
+    dest: "{{ tmp_template_dir }}/{{ item }}"
+    mode: 0644
+  loop:
+    - filen-sync.service
+
+- name: Install filen sync systemd user unit file
+  include_role:
+    name: copy_and_stow
+  vars:
+    prg_name: "{{ item }}"
+    src_dir: "/tmp"
+    dest_dir: "{{ dst_dotdir }}"
+    become_usr: "{{ ansible_user }}"
+    install_mode: 0644
+  with_items:
+    - filen
+
+- name: Remove temporary unit
+  ansible.builtin.file:
+    path: "{{ tmp_template_root }}"
+    state: absent
+
+- name: Reload systemd user rules
+  ansible.builtin.command: systemctl --user daemon-reload
+  become_user: "{{ ansible_user }}"
+
+- name: Start filen daemon
+  ansible.builtin.command: systemctl --user start filen-sync
+  become_user: "{{ ansible_user }}"
+
+- name: Enable filen daemon
+  ansible.builtin.command: systemctl --user enable filen-sync
+  become_user: "{{ ansible_user }}"
