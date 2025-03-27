@@ -31,7 +31,7 @@
   get_url:
     url: "https://github.com/FilenCloudDienste/filen-cli/releases/download/v{{ filen_cli_ver }}/filen-cli-v{{ filen_cli_ver }}-linux-x64"
     dest: "{{ tmp_template_root }}/bin/filen-cli"
-    mode: '755'
+    mode: '0755'
 
 - name: Move filen-cli executable to global path
   include_role:
@@ -63,6 +63,7 @@
   ansible.builtin.template:
     src: "templates/dotfiles/filen/.config/systemd/user/{{ item }}.j2"
     dest: "{{ tmp_template_dir }}/{{ item }}"
+    mode: '0644'
   loop:
     - filen-sync.service
 
@@ -74,7 +75,6 @@
     src_dir: "/tmp"
     dest_dir: "{{ dst_dotdir }}"
     become_usr: "{{ ansible_user }}"
-    install_mode: 0644
   with_items:
     - filen
 

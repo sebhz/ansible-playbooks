@@ -3,4 +3,3 @@ prg_name:
 src_dir: files
 dest_dir: /usr/local/stow
 become_usr: root
-install_mode: 0755
