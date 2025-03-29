@@ -24,27 +24,27 @@
 
 - name: Create temporary stow directory
   ansible.builtin.file:
-    path: "{{ tmp_template_root }}/bin"
+    path: "{{ tmp_stow_root }}/bin"
     state: directory
 
 - name: "Install filen-cli (version {{ filen_cli_ver }})"
   get_url:
     url: "https://github.com/FilenCloudDienste/filen-cli/releases/download/v{{ filen_cli_ver }}/filen-cli-v{{ filen_cli_ver }}-linux-x64"
-    dest: "{{ tmp_template_root }}/bin/filen-cli"
+    dest: "{{ tmp_stow_root }}/bin/filen-cli"
     mode: '0755'
 
 - name: Move filen-cli executable to global path
   include_role:
     name: copy_and_stow
   vars:
-    prg_name: filen
-    src_dir: "/tmp" 
+    prg_name: "{{ filen_bin_stow_dir }}"
+    src_dir: "{{ tmp_dir }}"
     dest_dir: "{{ install_root }}"
     become_usr: root
 
 - name: Clean temporary stow directory
   ansible.builtin.file:
-    path: "{{ tmp_template_root }}"
+    path: "{{ tmp_stow_root }}"
     state: absent
 
 - name: Copy filen syncPairs definition
@@ -56,13 +56,13 @@
 
 - name: Create temporary structure
   ansible.builtin.file:
-    path: "{{ tmp_template_dir }}"
+    path: "{{ tmp_systemd_dir }}"
     state: directory
 
 - name: Create filen sync systemd user unit file from template
   ansible.builtin.template:
     src: "templates/dotfiles/filen/.config/systemd/user/{{ item }}.j2"
-    dest: "{{ tmp_template_dir }}/{{ item }}"
+    dest: "{{ tmp_systemd_dir }}/{{ item }}"
     mode: '0644'
   loop:
     - filen-sync.service
@@ -80,7 +80,7 @@
 
 - name: Remove temporary unit
   ansible.builtin.file:
-    path: "{{ tmp_template_root }}"
+    path: "{{ tmp_systemd_root }}"
     state: absent
 
 - name: Reload systemd user rules

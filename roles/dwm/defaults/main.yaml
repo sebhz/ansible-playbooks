@@ -1,7 +1,7 @@
 install_root: /usr/local/stow
-dwm_commit: 6.5
+dwm_commit: "cfb8627a80a334"
 dwm_name: "dwm-{{ dwm_commit }}"
 dwm_installdir: "{{ install_root }}/{{ dwm_name }}"
-dmenu_commit: 5.3
+dmenu_commit: "b1e217b29aab8"
 dmenu_name: "dmenu-{{ dmenu_commit }}"
 dmenu_installdir: "{{ install_root }}/{{ dmenu_name }}"

@@ -22,6 +22,7 @@
     dest: "{{ dest_dir }}"
     src: "{{ src_dir }}/{{ prg_name }}"
     owner: "{{ become_usr }}"
+    mode: "{{ mode }}"
   become_user: "{{ become_usr }}"
 
 - name: Restow {{ prg_name }}

@@ -1,2 +1,5 @@
-tmp_template_root: /tmp/filen
-tmp_template_dir: "{{ tmp_template_root }}/.config/systemd/user"
+tmp_dir: "/tmp"
+filen_bin_stow_dir: "filen-{{ filen_cli_ver }}"
+tmp_stow_root: "{{ tmp_dir }}/{{ filen_bin_stow_dir }}"
+tmp_systemd_root: "{{ tmp_dir }}/filen"
+tmp_systemd_dir: "{{ tmp_systemd_root}}/.config/systemd/user"
